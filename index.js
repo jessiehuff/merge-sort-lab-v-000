@@ -1,13 +1,29 @@
 function findMinAndRemoveSorted(array){
-    let min = array[0]; 
-    let minIndex = 0; 
-    for (let i=0; i < array.length; i++){
-        //let currentElement = array[0];
-        if (array[i] < min){
-            min = array[i]; 
-            minIndex = i; 
+    return array.shift()
+}
+
+function merge(firstArray, secondArray){
+    let sorted = [];
+    while (firstArray.length !=0 && secondArray.length !=0){
+        if(firstArray[0] < secondArray[0]){
+            sorted.push(findMinAndRemoveSorted(firstArray))
+        } else {
+            sorted.push(findMinAndRemoveSorted(secondArray))
         }
     }
-    array.splice(minIndex,1); 
-    return min; 
+    return sorted.concat(firstArray).concat(secondArray);
+}
+
+function mergeSort(array){
+    let midpoint = array.length/2;
+    let firstHalf = array.splice(0, midpoint);
+    let secondHalf = array.splice(midpoint, array.length);
+    let sorted;
+
+    if (array.length < 2){
+        return array; 
+    } else {
+        sorted = merge(mergeSort(firstHalf), mergeSort(secondHalf))
+    }
+    return sorted
 }
